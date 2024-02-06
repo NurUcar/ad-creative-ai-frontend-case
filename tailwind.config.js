@@ -10,6 +10,9 @@ module.exports = {
         secondaryFadingSunset: "#B5B5C3",
         maximumBlue: "#4CA7D4",
       },
+      backgroundImage: {
+        "rick-and-morty-background": "url('/src/assets/img/background.jpg')",
+      },
     },
   },
   plugins: [],
