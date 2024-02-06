@@ -1,7 +1,9 @@
 import { Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
+import tempImage from "../../assets/img/rick.jpg";
 import { classNames } from "../../utils/classNames";
 import { ChevronSVG } from "../Icons/ChevronSVG";
+import { ListItem } from "./sub-components/ListItem";
 import { IMultiSelectProps } from "./types";
 
 const MultiSelect = ({
@@ -31,7 +33,7 @@ const MultiSelect = ({
       >
         <input
           className={
-            "w-full h-full rounded-md outline-none focus:caret-primaryBlue text-sm bg-transparent z-[1] px-3"
+            "w-full h-full rounded-md outline-none focus:caret-primaryBlue text-sm z-[1] px-3 "
           }
           onChange={(e) => setSearchText(e.target.value)}
           value={searchText}
@@ -39,7 +41,7 @@ const MultiSelect = ({
         <div className="absolute right-2.5 h-full w-3 flex items-center">
           <ChevronSVG
             className={classNames(
-              "w-3 h-3 fill-secondaryFadingSunset ",
+              "w-3 h-3 fill-secondaryFadingSunset z-10",
               !isPanelOpen ? "rotate-180 transform" : ""
             )}
           />
@@ -63,14 +65,37 @@ const MultiSelect = ({
       >
         <div
           className={classNames(
-            "absolute bg-white mt-16 border w-full flex rounded-md transition-all h-[245px] flex-col overflow-auto p-3",
+            "absolute bg-white mt-16 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto",
             error ? "!border-secondaryMadderLake bg-white   " : "",
             !isPanelOpen
               ? " border-secondaryFadingSunset bg-white "
               : " border-maximumBlue bg-secondaryGhostWhite "
           )}
         >
-          xxx
+          <ListItem
+            key={0}
+            name={"Rick and Morty"}
+            image={tempImage}
+            episode={2}
+            setSelectedCharacters={setSelectedCharacters}
+            selectedCharatersArray={selectedCharatersArray}
+          />
+          <ListItem
+            key={0}
+            name={"Rick and Morty"}
+            image={tempImage}
+            episode={2}
+            setSelectedCharacters={setSelectedCharacters}
+            selectedCharatersArray={selectedCharatersArray}
+          />
+          <ListItem
+            key={0}
+            name={"Rick and Morty"}
+            image={tempImage}
+            episode={2}
+            setSelectedCharacters={setSelectedCharacters}
+            selectedCharatersArray={selectedCharatersArray}
+          />
         </div>
       </Transition>
     </div>
