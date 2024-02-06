@@ -33,8 +33,8 @@ const MultiSelect = ({
         )}
       >
         <div className="w-full h-full flex flex-row place-items-center">
-          <SelectedItem />
-          <SelectedItem />
+          <SelectedItem key={"0"} />
+          <SelectedItem key={"1"} />
         </div>
         <input
           className={
@@ -78,7 +78,7 @@ const MultiSelect = ({
           )}
         >
           <ListItem
-            key={0}
+            key={"0"}
             name={"Rick and Morty"}
             image={tempImage}
             episode={2}
@@ -86,7 +86,7 @@ const MultiSelect = ({
             selectedCharatersArray={selectedCharatersArray}
           />
           <ListItem
-            key={0}
+            key={"1"}
             name={"Rick and Morty"}
             image={tempImage}
             episode={2}
@@ -94,7 +94,7 @@ const MultiSelect = ({
             selectedCharatersArray={selectedCharatersArray}
           />
           <ListItem
-            key={0}
+            key={"3"}
             name={"Rick and Morty"}
             image={tempImage}
             episode={2}

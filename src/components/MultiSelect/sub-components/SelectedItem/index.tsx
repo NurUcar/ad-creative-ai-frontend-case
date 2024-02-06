@@ -9,7 +9,7 @@ const SelectedItem = () => {
       <div className="absolute right-2 flex h-full items-center">
         <XMarkSVG
           className={classNames(
-            "w-5 h-5  transition-all duration-200",
+            "w-5 h-5 transition-all duration-200",
             "fill-gray-600 hover:fill-removeRed"
           )}
         />

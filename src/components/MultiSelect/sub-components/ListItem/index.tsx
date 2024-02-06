@@ -7,13 +7,11 @@ const ListItem = ({
   selectedCharatersArray,
   setSelectedCharacters,
 }: IListItemProps) => {
-  console.log("selectedCharatersArray", selectedCharatersArray);
   return (
     <div className="w-full flex flex-row h-18 py-3 flex-shrink-0 items-center border-b-2 pl-3">
       <Checkbox
         checked={false}
         onClick={() => {
-          console.log(name);
           selectedCharatersArray.push(name);
         }}
       />
