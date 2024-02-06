@@ -4,6 +4,7 @@ import tempImage from "../../assets/img/rick.jpg";
 import { classNames } from "../../utils/classNames";
 import { ChevronSVG } from "../Icons/ChevronSVG";
 import { ListItem } from "./sub-components/ListItem";
+import { SelectedItem } from "./sub-components/SelectedItem";
 import { IMultiSelectProps } from "./types";
 
 const MultiSelect = ({
@@ -24,16 +25,20 @@ const MultiSelect = ({
     <div className="flex w-full flex-col relative">
       <div
         className={classNames(
-          "flex w-full border rounded-md transition-all relative min-h-12",
+          "flex w-full border rounded-md transition-all relative min-h-[52px] bg-white",
           error ? "!border-secondaryMadderLake bg-white" : "",
           !isPanelOpen
             ? " border-secondaryFadingSunset bg-white "
             : " border-maximumBlue bg-secondaryGhostWhite "
         )}
       >
+        <div className="w-full h-full flex flex-row place-items-center">
+          <SelectedItem />
+          <SelectedItem />
+        </div>
         <input
           className={
-            "w-full h-full rounded-md outline-none focus:caret-primaryBlue text-sm z-[1] px-3 "
+            "w-full h-full rounded-md outline-none  focus:caret-primaryBlue text-sm z-[1] px-3 "
           }
           onChange={(e) => setSearchText(e.target.value)}
           value={searchText}
