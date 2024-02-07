@@ -15,6 +15,7 @@ export const getCharacterByName = createAsyncThunk(
       const res: [] = await instance.get(
         `https://rickandmortyapi.com/api/character/?name=${name}`
       );
+      console.log("res", res);
       return res;
     } catch (error: any) {
       return error;

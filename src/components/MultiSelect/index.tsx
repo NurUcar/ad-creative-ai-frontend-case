@@ -12,12 +12,12 @@ const MultiSelect = ({
   searchText,
   setSearchText,
   resultArray,
+  setResultArray,
 }: IMultiSelectProps) => {
   const [error, setError] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedCharaters, setSelectedCharacters] = useState<string[]>([]);
 
-  const selectedCharatersArray: string[] = [];
   useEffect(() => {
     searchText.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
   }, [searchText]);
@@ -26,7 +26,7 @@ const MultiSelect = ({
     <div className="flex w-full flex-col relative">
       <div
         className={classNames(
-          "flex w-full border rounded-md transition-all min-h-[52px] bg-white",
+          "inline-flex w-full items-center border rounded-md transition-all min-h-[52px] bg-white",
           error ? "!border-secondaryMadderLake bg-white" : "",
           !isPanelOpen
             ? " border-secondaryFadingSunset bg-white "
@@ -34,20 +34,19 @@ const MultiSelect = ({
         )}
       >
         <div className=" flex flex-wrap w-full h-full  flex-row place-items-center ">
-          <SelectedItem key={"0"} />
-          <SelectedItem key={"1"} />
-          <SelectedItem key={"1"} />
-          <SelectedItem key={"1"} />
+          {selectedCharaters?.map((item: any, index) => (
+            <SelectedItem key={index} item={item} />
+          ))}
           <input
             className={
-              "h-8 rounded-md outline-none  focus:caret-primaryBlue text-base z-[1] px-3 mb-1 ps-3"
+              "h-8 rounded-md outline-none focus:caret-primaryBlue text-base z-[1] px-3 mb-1 ps-3"
             }
             onChange={(e) => setSearchText(e.target.value)}
             value={searchText}
           />
         </div>
 
-        <div className="absolute inset-y-1/2 end-2 h-fit w-5 cursor-pointer">
+        <div className="inline-block mx-2 h-fit w-5 cursor-pointer">
           <IconButton
             icon={ChevronSVG}
             iconClassName={classNames(
@@ -79,15 +78,14 @@ const MultiSelect = ({
               : " border-maximumBlue bg-secondaryGhostWhite "
           )}
         >
-          {resultArray?.map((item: any, index: number) => {
+          {resultArray?.map((item: any) => {
             return (
               <ListItem
-                key={index}
-                name={item.name}
-                image={item.image}
-                episode={item.episode.length}
+                key={item.id}
+                item={item}
+                resultArray={resultArray}
+                setResultArray={setResultArray}
                 setSelectedCharacters={setSelectedCharacters}
-                selectedCharatersArray={selectedCharatersArray}
               />
             );
           })}

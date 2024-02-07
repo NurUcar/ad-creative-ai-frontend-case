@@ -6,13 +6,24 @@ export interface IMultiSelectProps
   searchText: string;
   setSearchText: (e: string) => void;
   resultArray: any;
+  setResultArray: (e: any) => void;
   resultStatus: string;
 }
 
-export interface IListItemProps {
+export interface IItemProps {
+  id: number;
   name: string;
   image: string;
   episode: number;
-  selectedCharatersArray: string[];
+  isSelected: boolean;
+}
+export interface IListItemProps {
+  item: IItemProps;
+  resultArray: any;
+  setResultArray: (e: any) => void;
   setSelectedCharacters: (e: string[]) => void;
+}
+
+export interface ISelectedItemProps {
+  item: IItemProps;
 }
