@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Checkbox } from "../../../Checkbox";
 import { IItemProps, IListItemProps } from "../../types";
 const ListItem = ({
@@ -14,12 +13,7 @@ const ListItem = ({
       )
     );
   };
-  useEffect(() => {
-    setSelectedCharacters(
-      resultArray?.filter((item: IItemProps) => item.isSelected === true)
-    );
-  }, [resultArray]);
-  console.log("resultArray1", resultArray);
+
   return (
     <div
       className="w-full flex flex-row h-18 py-3 flex-shrink-0 items-center border-b-2 pl-3"

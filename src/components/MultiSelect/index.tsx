@@ -6,17 +6,18 @@ import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
 import { ListItem } from "./sub-components/ListItem";
 import { SelectedItem } from "./sub-components/SelectedItem";
-import { IMultiSelectProps } from "./types";
+import { IItemProps, IMultiSelectProps } from "./types";
 
 const MultiSelect = ({
   searchText,
   setSearchText,
   resultArray,
   setResultArray,
+  selectedCharaters,
+  setSelectedCharacters,
 }: IMultiSelectProps) => {
   const [error, setError] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [selectedCharaters, setSelectedCharacters] = useState<string[]>([]);
 
   useEffect(() => {
     searchText.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
@@ -34,8 +35,13 @@ const MultiSelect = ({
         )}
       >
         <div className=" flex flex-wrap w-full h-full  flex-row place-items-center ">
-          {selectedCharaters?.map((item: any, index) => (
-            <SelectedItem key={index} item={item} />
+          {selectedCharaters?.map((item: IItemProps) => (
+            <SelectedItem
+              key={item?.id}
+              item={item}
+              resultArray={resultArray}
+              setResultArray={setResultArray}
+            />
           ))}
           <input
             className={
