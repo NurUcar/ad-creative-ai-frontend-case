@@ -1,11 +1,24 @@
+import { useEffect } from "react";
 import { Checkbox } from "../../../Checkbox";
 import { IItemProps, IListItemProps } from "../../types";
 const ListItem = ({
   item,
-  setSelectedCharacters,
+  searchText,
   resultArray,
   setResultArray,
+  setSelectedCharacters,
 }: IListItemProps) => {
+  const highlightSearchText = (fullName: string, searchText: string) => {
+    const parts = fullName.split(new RegExp(`(${searchText})`, "gi"));
+    return parts.map((part, index) =>
+      part.toLowerCase() === searchText.toLowerCase() ? (
+        <strong key={index}>{part}</strong>
+      ) : (
+        part
+      )
+    );
+  };
+
   const onCharacterClicked = (id: number) => {
     setResultArray((resultArray: any) =>
       resultArray?.map((item: IItemProps) =>
@@ -13,6 +26,11 @@ const ListItem = ({
       )
     );
   };
+  useEffect(() => {
+    setSelectedCharacters(
+      resultArray?.filter((item: IItemProps) => item.isSelected === true)
+    );
+  }, [resultArray]);
 
   return (
     <div
@@ -30,7 +48,9 @@ const ListItem = ({
         />
       </div>
       <div className="flex flex-col ml-1.5 text ">
-        <span className="text-gray-500 font-semibold text-lg">{item.name}</span>
+        <span className="text-gray-500 font-semibold text-lg">
+          {highlightSearchText(item.name, searchText)}
+        </span>
         <span className="text-gray-500">{item.episode} Episodes</span>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { MultiSelect } from "./components/MultiSelect";
-import { IItemProps } from "./components/MultiSelect/types";
 import { getCharacterByName } from "./store/asyncActions/rickAndMortyActions";
 import { useAppDispatch, useAppSelector } from "./store/store";
 
@@ -34,13 +33,6 @@ function App() {
     } else setResultArray([]);
   }, [dispatch, searchText]);
 
-  useEffect(() => {
-    setSelectedCharacters(
-      resultArray?.filter((item: IItemProps) => item.isSelected === true)
-    );
-  }, [resultArray]);
-
-  console.log("resultArray", resultArray);
   return (
     <div className="relative flex h-screen w-full items-center justify-center ">
       <div className="flex lg:w-1/3 md:w-1/2 w-2/3">

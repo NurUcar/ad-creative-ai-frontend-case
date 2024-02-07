@@ -21,8 +21,9 @@ export interface IItemProps {
 }
 export interface IListItemProps {
   item: IItemProps;
-  resultArray: any;
+  searchText: string;
   setResultArray: (e: any) => void;
+  resultArray: any;
   setSelectedCharacters: (e: any) => void;
 }
 
@@ -30,4 +31,5 @@ export interface ISelectedItemProps {
   item: IItemProps;
   resultArray: any;
   setResultArray: (e: any) => void;
+  setSelectedCharacters: (e: any) => void;
 }

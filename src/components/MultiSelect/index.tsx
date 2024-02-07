@@ -41,6 +41,7 @@ const MultiSelect = ({
               item={item}
               resultArray={resultArray}
               setResultArray={setResultArray}
+              setSelectedCharacters={setSelectedCharacters}
             />
           ))}
           <input
@@ -89,6 +90,7 @@ const MultiSelect = ({
               <ListItem
                 key={item.id}
                 item={item}
+                searchText={searchText}
                 resultArray={resultArray}
                 setResultArray={setResultArray}
                 setSelectedCharacters={setSelectedCharacters}
