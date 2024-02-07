@@ -6,6 +6,7 @@ export interface IMultiSelectProps
   searchText: string;
   setSearchText: (e: string) => void;
   resultArray: any;
+  resultStatus: string;
 }
 
 export interface IListItemProps {

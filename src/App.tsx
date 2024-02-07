@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "./store/store";
 function App() {
   const dispatch = useAppDispatch();
   const [searchText, setSearchText] = useState("");
+  const [resultArray, setResultArray] = useState([]);
 
   const {
     results,
@@ -15,16 +16,18 @@ function App() {
   useEffect(() => {
     dispatch(getCharacterByName(searchText));
   }, [dispatch, searchText]);
+  useEffect(() => {
+    results?.data?.results && setResultArray(results?.data?.results);
+  }, [dispatch, searchText]);
 
-  console.log("results", results);
-  console.log("resultStatus", resultStatus);
   return (
-    <div className="relative flex h-screen w-full items-center justify-center bg-rick-and-morty-background bg-contain bg-center">
-      <div className="flex w-1/3">
+    <div className="relative flex h-screen w-full items-center justify-center ">
+      <div className="flex lg:w-1/3 md:w-1/2 w-2/3">
         <MultiSelect
           searchText={searchText}
           setSearchText={setSearchText}
-          resultArray={[]}
+          resultArray={resultArray}
+          resultStatus={resultStatus}
         />
       </div>
     </div>

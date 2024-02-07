@@ -1,7 +1,8 @@
 import { Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
-import tempImage from "../../assets/img/rick.jpg";
+import { useEffect, useState } from "react";
+import RickAndMortyGif from "../../assets/img/rickAndMorty.gif";
 import { classNames } from "../../utils/classNames";
+import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
 import { ListItem } from "./sub-components/ListItem";
 import { SelectedItem } from "./sub-components/SelectedItem";
@@ -25,41 +26,42 @@ const MultiSelect = ({
     <div className="flex w-full flex-col relative">
       <div
         className={classNames(
-          "flex w-full border rounded-md transition-all relative min-h-[52px] bg-white",
+          "flex w-full border rounded-md transition-all min-h-[52px] bg-white",
           error ? "!border-secondaryMadderLake bg-white" : "",
           !isPanelOpen
             ? " border-secondaryFadingSunset bg-white "
             : " border-maximumBlue bg-secondaryGhostWhite "
         )}
       >
-        <div className="w-full h-full flex flex-row place-items-center">
+        <div className=" flex flex-wrap w-full h-full  flex-row place-items-center ">
           <SelectedItem key={"0"} />
           <SelectedItem key={"1"} />
+          <SelectedItem key={"1"} />
+          <SelectedItem key={"1"} />
+          <input
+            className={
+              "h-8 rounded-md outline-none  focus:caret-primaryBlue text-base z-[1] px-3 mb-1 ps-3"
+            }
+            onChange={(e) => setSearchText(e.target.value)}
+            value={searchText}
+          />
         </div>
-        <input
-          className={
-            "w-full h-full rounded-md outline-none  focus:caret-primaryBlue text-sm z-[1] px-3 "
-          }
-          onChange={(e) => setSearchText(e.target.value)}
-          value={searchText}
-        />
-        <div className="absolute right-2.5 h-full w-3 flex items-center">
-          <ChevronSVG
-            className={classNames(
-              "w-3 h-3 fill-secondaryFadingSunset z-10",
+
+        <div className="absolute inset-y-1/2 end-2 h-fit w-5 cursor-pointer">
+          <IconButton
+            icon={ChevronSVG}
+            iconClassName={classNames(
+              "w-4 h-4 fill-secondaryFadingSunset z-10",
               !isPanelOpen ? "rotate-180 transform" : ""
             )}
+            onClick={() => {
+              setIsPanelOpen(!isPanelOpen);
+            }}
           />
         </div>
       </div>
-      {error && !isPanelOpen && (
-        <span className="text-secondaryMadderLake text-xs mt-2 ltr:ml-3 rtl:mr-3">
-          An error occured, please try again later.
-        </span>
-      )}
 
       <Transition
-        as={Fragment}
         enter="transition ease-out duration-200"
         enterFrom="opacity-0 translate-y-1"
         enterTo="opacity-100 translate-y-0"
@@ -70,37 +72,38 @@ const MultiSelect = ({
       >
         <div
           className={classNames(
-            "absolute bg-white mt-16 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto",
+            "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto",
             error ? "!border-secondaryMadderLake bg-white   " : "",
             !isPanelOpen
               ? " border-secondaryFadingSunset bg-white "
               : " border-maximumBlue bg-secondaryGhostWhite "
           )}
         >
-          <ListItem
-            key={"0"}
-            name={"Rick and Morty"}
-            image={tempImage}
-            episode={2}
-            setSelectedCharacters={setSelectedCharacters}
-            selectedCharatersArray={selectedCharatersArray}
-          />
-          <ListItem
-            key={"1"}
-            name={"Rick and Morty"}
-            image={tempImage}
-            episode={2}
-            setSelectedCharacters={setSelectedCharacters}
-            selectedCharatersArray={selectedCharatersArray}
-          />
-          <ListItem
-            key={"3"}
-            name={"Rick and Morty"}
-            image={tempImage}
-            episode={2}
-            setSelectedCharacters={setSelectedCharacters}
-            selectedCharatersArray={selectedCharatersArray}
-          />
+          {resultArray?.map((item: any, index: number) => {
+            return (
+              <ListItem
+                key={index}
+                name={item.name}
+                image={item.image}
+                episode={item.episode.length}
+                setSelectedCharacters={setSelectedCharacters}
+                selectedCharatersArray={selectedCharatersArray}
+              />
+            );
+          })}
+          {error && (
+            <span className="text-secondaryMadderLake text-base mt-2 ml-3">
+              An error occured, please try again later.
+            </span>
+          )}
+          {!searchText && (
+            <div className="flex flex-col w-full h-full items-center justify-center ">
+              <img src={RickAndMortyGif} alt="loading..." width={380} />
+              <span className="text-secondaryMadderLake text-base mt-2">
+                You must search for one of Rick & Morty characters
+              </span>
+            </div>
+          )}
         </div>
       </Transition>
     </div>
