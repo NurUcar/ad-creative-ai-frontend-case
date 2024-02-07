@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getCharacterByName } from "../asyncActions/rickAndMortyActions";
+import { IGetRickAndMortyCharactersResponse } from "../types/response";
 
 type IGenericFetchStatus = "success" | "error" | "idle" | "loading";
 
 export interface IRickAndMortyState {
-  results?: any | null;
+  results?: IGetRickAndMortyCharactersResponse | null;
 
   fetch: {
     results: IGenericFetchStatus;
