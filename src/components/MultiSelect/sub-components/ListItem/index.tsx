@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Checkbox } from "../../../Checkbox";
 import { IItemProps, IListItemProps } from "../../types";
 const ListItem = ({
@@ -6,7 +5,6 @@ const ListItem = ({
   searchText,
   resultArray,
   setResultArray,
-  setSelectedCharacters,
 }: IListItemProps) => {
   const highlightSearchText = (fullName: string, searchText: string) => {
     const parts = fullName.split(new RegExp(`(${searchText})`, "gi"));
@@ -26,11 +24,6 @@ const ListItem = ({
       )
     );
   };
-  useEffect(() => {
-    setSelectedCharacters(
-      resultArray?.filter((item: IItemProps) => item.isSelected === true)
-    );
-  }, [resultArray]);
 
   return (
     <div

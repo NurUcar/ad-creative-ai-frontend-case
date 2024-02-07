@@ -1,9 +1,11 @@
 import { Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import RickAndMortyGif from "../../assets/img/rickAndMorty.gif";
 import { classNames } from "../../utils/classNames";
 import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
+import { Spinner } from "../Spinner";
 import { ListItem } from "./sub-components/ListItem";
 import { SelectedItem } from "./sub-components/SelectedItem";
 import { IItemProps, IMultiSelectProps } from "./types";
@@ -15,12 +17,14 @@ const MultiSelect = ({
   setResultArray,
   selectedCharaters,
   setSelectedCharacters,
+  dataLength,
+  fetchMoreData,
 }: IMultiSelectProps) => {
   const [error, setError] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   useEffect(() => {
-    searchText.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
+    searchText?.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
   }, [searchText]);
 
   return (
@@ -41,6 +45,7 @@ const MultiSelect = ({
               item={item}
               resultArray={resultArray}
               setResultArray={setResultArray}
+              selectedCharaters={selectedCharaters}
               setSelectedCharacters={setSelectedCharacters}
             />
           ))}
@@ -78,25 +83,34 @@ const MultiSelect = ({
       >
         <div
           className={classNames(
-            "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto",
+            "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto ",
             error ? "!border-secondaryMadderLake bg-white   " : "",
             !isPanelOpen
               ? " border-secondaryFadingSunset bg-white "
               : " border-maximumBlue bg-secondaryGhostWhite "
           )}
         >
-          {resultArray?.map((item: any) => {
-            return (
-              <ListItem
-                key={item.id}
-                item={item}
-                searchText={searchText}
-                resultArray={resultArray}
-                setResultArray={setResultArray}
-                setSelectedCharacters={setSelectedCharacters}
-              />
-            );
-          })}
+          <InfiniteScroll
+            dataLength={dataLength}
+            next={fetchMoreData}
+            hasMore={dataLength > resultArray ? true : false}
+            scrollThreshold={1}
+            loader={<Spinner className="!h-5" />}
+            scrollableTarget="scrollableDiv"
+          >
+            {resultArray?.map((item: any) => {
+              return (
+                <ListItem
+                  key={item.id}
+                  item={item}
+                  searchText={searchText}
+                  resultArray={resultArray}
+                  setResultArray={setResultArray}
+                />
+              );
+            })}
+          </InfiniteScroll>
+
           {error && (
             <span className="text-secondaryMadderLake text-base mt-2 ml-3">
               An error occured, please try again later.

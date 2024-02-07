@@ -10,6 +10,8 @@ export interface IMultiSelectProps
   selectedCharaters: any;
   setSelectedCharacters: (e: any) => void;
   resultStatus: string;
+  fetchMoreData: () => void;
+  dataLength: number;
 }
 
 export interface IItemProps {
@@ -24,12 +26,12 @@ export interface IListItemProps {
   searchText: string;
   setResultArray: (e: any) => void;
   resultArray: any;
-  setSelectedCharacters: (e: any) => void;
 }
 
 export interface ISelectedItemProps {
   item: IItemProps;
   resultArray: any;
   setResultArray: (e: any) => void;
+  selectedCharaters: any;
   setSelectedCharacters: (e: any) => void;
 }
