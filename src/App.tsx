@@ -10,49 +10,38 @@ function App() {
   const [resultArray, setResultArray] = useState<IItemProps[]>([]);
   const [selectedCharaters, setSelectedCharacters] = useState<IItemProps[]>([]);
   const [dataLength, setDataLenght] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const {
     results,
     fetch: { results: resultStatus },
   } = useAppSelector((state) => state.RickAndMorty);
 
-  const fetchMoreData = () => {
-    console.log("here1");
-    setPage(page + 1);
-    console.log("here", page);
-    dispatch(getCharacterByName({ name: searchText, currentPage: page }));
-  };
-
-  useEffect(() => {
-    setPage(0);
-    setResultArray([]);
-    dispatch(getCharacterByName({ name: searchText, currentPage: page }));
-    results && setDataLenght(results?.info?.count);
-  }, [searchText]);
-
-  useEffect(() => {
-    const tempSelectedCharacters = selectedCharaters;
+  const getResultArray = () => {
     if (results) {
-      const tempResultArray = results?.results?.map((item: any) => {
+      let tempResultArray: IItemProps[] = [];
+      tempResultArray = results?.data?.results?.map((item: any) => {
         return {
           id: item.id,
           name: item.name,
           image: item.image,
           episode: item.episode.length,
-          isSelected: tempSelectedCharacters?.some(
+          isSelected: selectedCharaters?.some(
             (tmpItem: IItemProps) => tmpItem.id === item.id
           ),
         };
       });
-      resultArray.length > 0
-        ? setResultArray([...resultArray, ...tempResultArray])
-        : setResultArray(tempResultArray);
+      if (tempResultArray?.length > 0)
+        resultArray.length > 0
+          ? setResultArray((resultArray) => [
+              ...resultArray,
+              ...tempResultArray,
+            ])
+          : setResultArray(tempResultArray);
     }
-  }, [dispatch, results]);
+  };
 
-  console.log(resultArray);
-  useEffect(() => {
+  const getSelectedCharactersArray = () => {
     if (selectedCharaters?.length > 0) {
       const tempSelectedCharacters: IItemProps[] = [];
       resultArray.map((sourceItem: IItemProps) => {
@@ -68,11 +57,36 @@ function App() {
           tempSelectedCharacters.push(sourceItem);
         }
       });
-      setSelectedCharacters([...selectedCharaters, ...tempSelectedCharacters]);
+      tempSelectedCharacters.length > 0 &&
+        setSelectedCharacters((selectedCharaters) => [
+          ...selectedCharaters,
+          ...tempSelectedCharacters,
+        ]);
+    } else {
+      setSelectedCharacters(
+        resultArray?.filter((item: IItemProps) => item.isSelected === true)
+      );
     }
-    setSelectedCharacters(
-      resultArray?.filter((item: IItemProps) => item.isSelected === true)
-    );
+  };
+
+  useEffect(() => {
+    if (
+      searchText.length > 0 &&
+      (results?.data?.info?.next !== null || page === 1)
+    ) {
+      dispatch(
+        getCharacterByName({ name: searchText, currentPage: page })
+      ).catch((error: any) => console.error("rejected", error));
+    }
+  }, [searchText, page]);
+
+  useEffect(() => {
+    getResultArray();
+    results && setDataLenght(results?.data?.info?.count);
+  }, [results]);
+
+  useEffect(() => {
+    getSelectedCharactersArray();
   }, [resultArray]);
 
   return (
@@ -87,7 +101,8 @@ function App() {
           selectedCharaters={selectedCharaters}
           setSelectedCharacters={setSelectedCharacters}
           dataLength={dataLength}
-          fetchMoreData={fetchMoreData}
+          page={page}
+          setPage={setPage}
         />
       </div>
     </div>

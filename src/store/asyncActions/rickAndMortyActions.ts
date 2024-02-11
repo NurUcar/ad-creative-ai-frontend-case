@@ -23,9 +23,8 @@ export const getCharacterByName = createAsyncThunk(
       );
 
       const results: IGetRickAndMortyCharactersResponse[] = res?.data;
-
-      console.log("res", results);
-      return results;
+      console.log("results", results);
+      return res;
     } catch (error: any) {
       return error;
     }

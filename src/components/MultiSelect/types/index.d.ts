@@ -10,7 +10,8 @@ export interface IMultiSelectProps
   selectedCharaters: any;
   setSelectedCharacters: (e: any) => void;
   resultStatus: string;
-  fetchMoreData: () => void;
+  page: number;
+  setPage: (e: number) => void;
   dataLength: number;
 }
 

@@ -17,12 +17,10 @@ const SelectedItem = ({
           item.id === id ? { ...item, isSelected: false } : item
         )
       );
-      setSelectedCharacters(
-        selectedCharaters.filter(
-          (targetItem: IItemProps) => targetItem.id !== id
-        )
-      );
     }
+    setSelectedCharacters(
+      selectedCharaters.filter((targetItem: IItemProps) => targetItem.id !== id)
+    );
   };
   return (
     <div className="inline-flex flex-shrink-0 relative justify-between min-w-36 w-auto h-9 ml-3 bg-slate-200 rounded-md items-center pl-2 my-2">

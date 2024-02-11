@@ -1,11 +1,9 @@
 import { Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import RickAndMortyGif from "../../assets/img/rickAndMorty.gif";
 import { classNames } from "../../utils/classNames";
 import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
-import { Spinner } from "../Spinner";
 import { ListItem } from "./sub-components/ListItem";
 import { SelectedItem } from "./sub-components/SelectedItem";
 import { IItemProps, IMultiSelectProps } from "./types";
@@ -17,16 +15,35 @@ const MultiSelect = ({
   setResultArray,
   selectedCharaters,
   setSelectedCharacters,
+  page,
+  setPage,
   dataLength,
-  fetchMoreData,
 }: IMultiSelectProps) => {
   const [error, setError] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [isScrollBottom, setIsScrollBottom] = useState(false);
 
   useEffect(() => {
     searchText?.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
   }, [searchText]);
 
+  const onScroll = (e: any) => {
+    setIsScrollBottom(
+      e.target.scrollHeight - e.target.scrollTop - 10 <= e.target.clientHeight
+    );
+
+    if (isScrollBottom) {
+      dataLength > resultArray.length && setPage(page + 1);
+    }
+  };
+
+  const onSearch = (tempSearchText: string) => {
+    setPage(1);
+    setResultArray([]);
+    setIsScrollBottom(false);
+    setSearchText(tempSearchText);
+  };
+  console.log(resultArray);
   return (
     <div className="flex w-full flex-col relative">
       <div
@@ -53,7 +70,7 @@ const MultiSelect = ({
             className={
               "h-8 rounded-md outline-none focus:caret-primaryBlue text-base z-[1] px-3 mb-1 ps-3"
             }
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => onSearch(e.target.value)}
             value={searchText}
           />
         </div>
@@ -89,27 +106,19 @@ const MultiSelect = ({
               ? " border-secondaryFadingSunset bg-white "
               : " border-maximumBlue bg-secondaryGhostWhite "
           )}
+          onScroll={onScroll}
         >
-          <InfiniteScroll
-            dataLength={dataLength}
-            next={fetchMoreData}
-            hasMore={dataLength > resultArray ? true : false}
-            scrollThreshold={1}
-            loader={<Spinner className="!h-5" />}
-            scrollableTarget="scrollableDiv"
-          >
-            {resultArray?.map((item: any) => {
-              return (
-                <ListItem
-                  key={item.id}
-                  item={item}
-                  searchText={searchText}
-                  resultArray={resultArray}
-                  setResultArray={setResultArray}
-                />
-              );
-            })}
-          </InfiniteScroll>
+          {resultArray?.map((item: any) => {
+            return (
+              <ListItem
+                key={item.id}
+                item={item}
+                searchText={searchText}
+                resultArray={resultArray}
+                setResultArray={setResultArray}
+              />
+            );
+          })}
 
           {error && (
             <span className="text-secondaryMadderLake text-base mt-2 ml-3">
