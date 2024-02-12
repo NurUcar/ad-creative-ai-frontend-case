@@ -63,7 +63,6 @@ export const handleSelectedItemKeyDown = ({
         : 0
     );
   } else if (event.key === "Backspace") {
-    console.log(selectedItemIndex);
     setResultArray((resultArray: any) =>
       resultArray?.map((item: IItemProps, itemIndex: number) =>
         itemIndex === selectedItemIndex ? { ...item, isSelected: false } : item

@@ -24,8 +24,6 @@ const MultiSelect = ({
   dataLength,
 }: IMultiSelectProps) => {
   const listItemContainer = useRef<HTMLDivElement>(null);
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isScrollBottom, setIsScrollBottom] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
@@ -39,9 +37,6 @@ const MultiSelect = ({
     searchText?.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
   }, [searchText]);
 
-  useEffect(() => {
-    resultStatus === "success" && setIsLoading(false);
-  }, [resultStatus]);
   const onScroll = (e: any) => {
     setIsScrollBottom(
       e.target.scrollHeight - e.target.scrollTop - 10 <= e.target.clientHeight
@@ -64,7 +59,6 @@ const MultiSelect = ({
       <div
         className={classNames(
           "inline-flex w-full items-center border rounded-md transition-all min-h-[52px] bg-white",
-          error ? "!border-secondaryMadderLake bg-white" : "",
           !isPanelOpen
             ? " border-secondaryFadingSunset bg-white "
             : " border-maximumBlue bg-secondaryGhostWhite "
@@ -134,7 +128,6 @@ const MultiSelect = ({
             ref={listItemContainer}
             className={classNames(
               "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto focus:outline-none",
-              error ? "!border-secondaryMadderLake bg-white   " : "",
               !isPanelOpen
                 ? " border-secondaryFadingSunset bg-white "
                 : " border-maximumBlue bg-secondaryGhostWhite "
@@ -166,11 +159,6 @@ const MultiSelect = ({
               );
             })}
 
-            {error && (
-              <span className="text-secondaryMadderLake text-base mt-2 ml-3">
-                An error occured, please try again later.
-              </span>
-            )}
             {!searchText && (
               <div className="flex flex-col w-full h-full items-center justify-center ">
                 <img src={RickAndMortyGif} alt="loading..." width={380} />
