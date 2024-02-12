@@ -6,6 +6,7 @@ import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
 import { handleListItemKeyDown, handleSelectedItemKeyDown } from "./helpers";
 import { ListItem } from "./sub-components/ListItem";
+import { ListItemSkeleton } from "./sub-components/ListItem/sub-component/skeletonLoader";
 import { SelectedItem } from "./sub-components/SelectedItem";
 import { IItemProps, IMultiSelectProps } from "./types";
 
@@ -142,6 +143,7 @@ const MultiSelect = ({
             })
           }
         >
+          <ListItemSkeleton />
           {resultArray?.map((item: any) => {
             return (
               <ListItem
