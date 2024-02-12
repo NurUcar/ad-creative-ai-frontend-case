@@ -7,8 +7,8 @@ import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
 import { handleListItemKeyDown, handleSelectedItemKeyDown } from "./helpers";
 import { ListItem } from "./sub-components/ListItem";
-import { ListItemSkeleton } from "./sub-components/ListItem/sub-component/SkeletonLoader";
 import { SelectedItem } from "./sub-components/SelectedItem";
+import { ListItemSkeleton } from "./sub-components/SkeletonLoader";
 import { IItemProps, IMultiSelectProps } from "./types";
 
 const MultiSelect = ({
