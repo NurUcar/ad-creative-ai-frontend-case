@@ -1,12 +1,13 @@
 import { Transition } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
+import NoDataGif from "../../assets/img/no-data.gif";
 import RickAndMortyGif from "../../assets/img/rickAndMorty.gif";
 import { classNames } from "../../utils/classNames";
 import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
 import { handleListItemKeyDown, handleSelectedItemKeyDown } from "./helpers";
 import { ListItem } from "./sub-components/ListItem";
-import { ListItemSkeleton } from "./sub-components/ListItem/sub-component/skeletonLoader";
+import { ListItemSkeleton } from "./sub-components/ListItem/sub-component/SkeletonLoader";
 import { SelectedItem } from "./sub-components/SelectedItem";
 import { IItemProps, IMultiSelectProps } from "./types";
 
@@ -14,6 +15,7 @@ const MultiSelect = ({
   searchText,
   setSearchText,
   resultArray,
+  resultStatus,
   setResultArray,
   selectedCharaters,
   setSelectedCharacters,
@@ -23,6 +25,7 @@ const MultiSelect = ({
 }: IMultiSelectProps) => {
   const listItemContainer = useRef<HTMLDivElement>(null);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isScrollBottom, setIsScrollBottom] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
@@ -36,6 +39,9 @@ const MultiSelect = ({
     searchText?.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
   }, [searchText]);
 
+  useEffect(() => {
+    resultStatus === "success" && setIsLoading(false);
+  }, [resultStatus]);
   const onScroll = (e: any) => {
     setIsScrollBottom(
       e.target.scrollHeight - e.target.scrollTop - 10 <= e.target.clientHeight
@@ -121,57 +127,68 @@ const MultiSelect = ({
         leaveTo="opacity-0 translate-y-1"
         show={isPanelOpen}
       >
-        <div
-          ref={listItemContainer}
-          className={classNames(
-            "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto focus:outline-none",
-            error ? "!border-secondaryMadderLake bg-white   " : "",
-            !isPanelOpen
-              ? " border-secondaryFadingSunset bg-white "
-              : " border-maximumBlue bg-secondaryGhostWhite "
-          )}
-          onScroll={onScroll}
-          tabIndex={0}
-          onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
-            handleListItemKeyDown({
-              event,
-              listItemContainer,
-              selectedListItemIndex,
-              setSelectedListItemIndex,
-              resultArray,
-              setResultArray,
-            })
-          }
-        >
+        {resultStatus === "loading" ? (
           <ListItemSkeleton />
-          {resultArray?.map((item: any) => {
-            return (
-              <ListItem
-                key={item.id}
-                item={item}
-                searchText={searchText}
-                resultArray={resultArray}
-                setResultArray={setResultArray}
-                setSelectedIndex={setSelectedListItemIndex}
-                selectedIndex={selectedListItemIndex}
-              />
-            );
-          })}
+        ) : (
+          <div
+            ref={listItemContainer}
+            className={classNames(
+              "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto focus:outline-none",
+              error ? "!border-secondaryMadderLake bg-white   " : "",
+              !isPanelOpen
+                ? " border-secondaryFadingSunset bg-white "
+                : " border-maximumBlue bg-secondaryGhostWhite "
+            )}
+            onScroll={onScroll}
+            tabIndex={0}
+            onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
+              handleListItemKeyDown({
+                event,
+                listItemContainer,
+                selectedListItemIndex,
+                setSelectedListItemIndex,
+                resultArray,
+                setResultArray,
+              })
+            }
+          >
+            {resultArray?.map((item: any) => {
+              return (
+                <ListItem
+                  key={item.id}
+                  item={item}
+                  searchText={searchText}
+                  resultArray={resultArray}
+                  setResultArray={setResultArray}
+                  setSelectedIndex={setSelectedListItemIndex}
+                  selectedIndex={selectedListItemIndex}
+                />
+              );
+            })}
 
-          {error && (
-            <span className="text-secondaryMadderLake text-base mt-2 ml-3">
-              An error occured, please try again later.
-            </span>
-          )}
-          {!searchText && (
-            <div className="flex flex-col w-full h-full items-center justify-center ">
-              <img src={RickAndMortyGif} alt="loading..." width={380} />
-              <span className="text-secondaryMadderLake text-base mt-2">
-                You must search for one of Rick & Morty characters
+            {error && (
+              <span className="text-secondaryMadderLake text-base mt-2 ml-3">
+                An error occured, please try again later.
               </span>
-            </div>
-          )}
-        </div>
+            )}
+            {!searchText && (
+              <div className="flex flex-col w-full h-full items-center justify-center ">
+                <img src={RickAndMortyGif} alt="loading..." width={380} />
+                <span className=" text-base mt-2">
+                  You must search for one of Rick & Morty characters
+                </span>
+              </div>
+            )}
+            {resultStatus === "success"! &&
+              resultArray.length === 0 &&
+              searchText.length > 0 && (
+                <div className="flex flex-col w-full h-full items-center justify-center ">
+                  <img src={NoDataGif} alt="loading..." width={380} />
+                  <span className=" text-base mt-2">No Data Found!</span>
+                </div>
+              )}
+          </div>
+        )}
       </Transition>
     </div>
   );
