@@ -1,9 +1,10 @@
 import { Transition } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RickAndMortyGif from "../../assets/img/rickAndMorty.gif";
 import { classNames } from "../../utils/classNames";
 import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
+import { handleListItemKeyDown, handleSelectedItemKeyDown } from "./helpers";
 import { ListItem } from "./sub-components/ListItem";
 import { SelectedItem } from "./sub-components/SelectedItem";
 import { IItemProps, IMultiSelectProps } from "./types";
@@ -19,9 +20,16 @@ const MultiSelect = ({
   setPage,
   dataLength,
 }: IMultiSelectProps) => {
+  const listItemContainer = useRef<HTMLDivElement>(null);
   const [error, setError] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isScrollBottom, setIsScrollBottom] = useState(false);
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(
+    null
+  );
+  const [selectedListItemIndex, setSelectedListItemIndex] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     searchText?.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
@@ -43,7 +51,7 @@ const MultiSelect = ({
     setIsScrollBottom(false);
     setSearchText(tempSearchText);
   };
-  console.log(resultArray);
+
   return (
     <div className="flex w-full flex-col relative">
       <div
@@ -55,8 +63,20 @@ const MultiSelect = ({
             : " border-maximumBlue bg-secondaryGhostWhite "
         )}
       >
-        <div className=" flex flex-wrap w-full h-full  flex-row place-items-center ">
-          {selectedCharaters?.map((item: IItemProps) => (
+        <div
+          className=" flex flex-wrap w-full h-full  flex-row place-items-center outline-none"
+          tabIndex={0}
+          onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
+            handleSelectedItemKeyDown({
+              event,
+              selectedItemIndex,
+              setSelectedItemIndex,
+              selectedCharaters,
+              setResultArray,
+            })
+          }
+        >
+          {selectedCharaters?.map((item: IItemProps, index: number) => (
             <SelectedItem
               key={item?.id}
               item={item}
@@ -64,11 +84,13 @@ const MultiSelect = ({
               setResultArray={setResultArray}
               selectedCharaters={selectedCharaters}
               setSelectedCharacters={setSelectedCharacters}
+              setSelectedIndex={setSelectedItemIndex}
+              selectedIndex={selectedItemIndex}
             />
           ))}
           <input
             className={
-              "h-8 rounded-md outline-none focus:caret-primaryBlue text-base z-[1] px-3 mb-1 ps-3"
+              "h-8 w-full rounded-md outline-none focus:caret-primaryBlue text-base z-[1] px-3 mb-1 ps-3"
             }
             onChange={(e) => onSearch(e.target.value)}
             value={searchText}
@@ -99,14 +121,26 @@ const MultiSelect = ({
         show={isPanelOpen}
       >
         <div
+          ref={listItemContainer}
           className={classNames(
-            "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto ",
+            "absolute bg-white mt-3 border w-full flex rounded-md transition-all h-[265px] flex-col overflow-auto focus:outline-none",
             error ? "!border-secondaryMadderLake bg-white   " : "",
             !isPanelOpen
               ? " border-secondaryFadingSunset bg-white "
               : " border-maximumBlue bg-secondaryGhostWhite "
           )}
           onScroll={onScroll}
+          tabIndex={0}
+          onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
+            handleListItemKeyDown({
+              event,
+              listItemContainer,
+              selectedListItemIndex,
+              setSelectedListItemIndex,
+              resultArray,
+              setResultArray,
+            })
+          }
         >
           {resultArray?.map((item: any) => {
             return (
@@ -116,6 +150,8 @@ const MultiSelect = ({
                 searchText={searchText}
                 resultArray={resultArray}
                 setResultArray={setResultArray}
+                setSelectedIndex={setSelectedListItemIndex}
+                selectedIndex={selectedListItemIndex}
               />
             );
           })}

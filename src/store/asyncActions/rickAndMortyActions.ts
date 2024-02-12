@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { IGetRickAndMortyCharactersResponse } from "../types/response";
 
 const instance = axios.create({
   headers: {
@@ -22,8 +21,6 @@ export const getCharacterByName = createAsyncThunk(
         `https://rickandmortyapi.com/api/character/?page=${payload.currentPage}&name=${payload.name}`
       );
 
-      const results: IGetRickAndMortyCharactersResponse[] = res?.data;
-      console.log("results", results);
       return res;
     } catch (error: any) {
       return error;

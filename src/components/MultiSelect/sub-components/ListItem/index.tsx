@@ -5,7 +5,12 @@ const ListItem = ({
   searchText,
   resultArray,
   setResultArray,
+  setSelectedIndex,
+  selectedIndex,
 }: IListItemProps) => {
+  const index = resultArray.findIndex(
+    (tmpItem: IItemProps) => tmpItem.id === item.id
+  );
   const highlightSearchText = (fullName: string, searchText: string) => {
     const parts = fullName.split(new RegExp(`(${searchText})`, "gi"));
     return parts.map((part, index) =>
@@ -18,6 +23,7 @@ const ListItem = ({
   };
 
   const onCharacterClicked = (id: number) => {
+    setSelectedIndex(index);
     setResultArray((resultArray: any) =>
       resultArray?.map((item: IItemProps) =>
         item.id === id ? { ...item, isSelected: !item.isSelected } : item
@@ -27,10 +33,15 @@ const ListItem = ({
 
   return (
     <div
-      className="w-full flex flex-row h-18 py-3 flex-shrink-0 items-center border-b-2 pl-3"
-      onClick={() => {
-        onCharacterClicked(item.id);
+      key={index}
+      className={
+        "w-full flex flex-row h-18 py-3 flex-shrink-0 items-center border-b-2 pl-3 outline-none"
+      }
+      style={{
+        backgroundColor: index === selectedIndex ? "lightgray" : "",
+        cursor: "pointer",
       }}
+      onClick={() => onCharacterClicked(item.id)}
     >
       <Checkbox checked={item.isSelected} />
       <div className="ml-3 mr-1.5">

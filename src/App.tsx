@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { MultiSelect } from "./components/MultiSelect";
+import {
+  getResultArray,
+  getSelectedCharactersArray,
+} from "./components/MultiSelect/helpers";
 import { IItemProps } from "./components/MultiSelect/types";
 import { getCharacterByName } from "./store/asyncActions/rickAndMortyActions";
 import { useAppDispatch, useAppSelector } from "./store/store";
@@ -17,58 +21,6 @@ function App() {
     fetch: { results: resultStatus },
   } = useAppSelector((state) => state.RickAndMorty);
 
-  const getResultArray = () => {
-    if (results) {
-      let tempResultArray: IItemProps[] = [];
-      tempResultArray = results?.data?.results?.map((item: any) => {
-        return {
-          id: item.id,
-          name: item.name,
-          image: item.image,
-          episode: item.episode.length,
-          isSelected: selectedCharaters?.some(
-            (tmpItem: IItemProps) => tmpItem.id === item.id
-          ),
-        };
-      });
-      if (tempResultArray?.length > 0)
-        resultArray.length > 0
-          ? setResultArray((resultArray) => [
-              ...resultArray,
-              ...tempResultArray,
-            ])
-          : setResultArray(tempResultArray);
-    }
-  };
-
-  const getSelectedCharactersArray = () => {
-    if (selectedCharaters?.length > 0) {
-      const tempSelectedCharacters: IItemProps[] = [];
-      resultArray.map((sourceItem: IItemProps) => {
-        const needToAdd = selectedCharaters?.some(
-          (targetItem: IItemProps) =>
-            sourceItem.id !== targetItem.id && sourceItem.isSelected === true
-        );
-
-        const isAlreadyIncluded = selectedCharaters?.some(
-          (targetItem: IItemProps) => targetItem.id === sourceItem.id
-        );
-        if (!isAlreadyIncluded && needToAdd) {
-          tempSelectedCharacters.push(sourceItem);
-        }
-      });
-      tempSelectedCharacters.length > 0 &&
-        setSelectedCharacters((selectedCharaters) => [
-          ...selectedCharaters,
-          ...tempSelectedCharacters,
-        ]);
-    } else {
-      setSelectedCharacters(
-        resultArray?.filter((item: IItemProps) => item.isSelected === true)
-      );
-    }
-  };
-
   useEffect(() => {
     if (
       searchText.length > 0 &&
@@ -81,16 +33,21 @@ function App() {
   }, [searchText, page]);
 
   useEffect(() => {
-    getResultArray();
+    getResultArray({ results, selectedCharaters, resultArray, setResultArray });
     results && setDataLenght(results?.data?.info?.count);
   }, [results]);
 
   useEffect(() => {
-    getSelectedCharactersArray();
+    getSelectedCharactersArray({
+      selectedCharaters,
+      setSelectedCharacters,
+      resultArray,
+      setResultArray,
+    });
   }, [resultArray]);
 
   return (
-    <div className="relative flex h-screen w-full items-center justify-center ">
+    <div className="relative flex h-[96vh] w-full items-center justify-center ">
       <div className="flex lg:w-1/3 md:w-1/2 w-2/3">
         <MultiSelect
           searchText={searchText}

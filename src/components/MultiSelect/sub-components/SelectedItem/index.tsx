@@ -9,7 +9,12 @@ const SelectedItem = ({
   setResultArray,
   selectedCharaters,
   setSelectedCharacters,
+  setSelectedIndex,
+  selectedIndex,
 }: ISelectedItemProps) => {
+  const index = resultArray.findIndex(
+    (tmpItem: IItemProps) => tmpItem.id === item.id
+  );
   const onRemoveCharacterClicked = (id: number) => {
     if (resultArray.findIndex((item: IItemProps) => item.id === id) > -1) {
       setResultArray((resultArray: any) =>
@@ -22,8 +27,18 @@ const SelectedItem = ({
       selectedCharaters.filter((targetItem: IItemProps) => targetItem.id !== id)
     );
   };
+  const onSelectedCharacterClicked = () => {
+    setSelectedIndex(index);
+  };
   return (
-    <div className="inline-flex flex-shrink-0 relative justify-between min-w-36 w-auto h-9 ml-3 bg-slate-200 rounded-md items-center pl-2 my-2">
+    <div
+      className="inline-flex flex-shrink-0 relative justify-between min-w-36 w-auto h-9 ml-3 bg-slate-200 rounded-md items-center pl-2 my-2 active:bg-slate-300 active:outline-none"
+      style={{
+        backgroundColor: index === selectedIndex ? "lightgray" : "",
+        cursor: "pointer",
+      }}
+      onClick={() => onSelectedCharacterClicked()}
+    >
       <span className="w-fit text-gray-600 font-medium text-base ">
         {item.name}
       </span>
