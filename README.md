@@ -1,23 +1,19 @@
-## Case:
-Adcreative.ai frontend developer pozisyonu icin hazirladigimiz bu case'de sizden React.js kullanarak multi-select autocomplete component implement etmenizi istiyoruz.
-Daha sonra bu componenti "Rick and Morty" api'daki karakterleri aramak ve select etmek icin kullanacaksiniz.
+# Getting Started
 
-Api linki: https://rickandmortyapi.com/documentation/#introduction
+First, install the dependencies by running `yarn install`. <br />
+To initialize husky hooks run `yarn prepare`.<br />
+To run the development server `yarn dev`.
 
-## Verilen assetler:
-* Ornek tasarım assets/multi-select.png.
+## Git Merge Conflict Bypass Husky
 
-## Gereksinimler:
-* React vs Typescript
-* Tasarima uygun multi-select implementasyonu
-* input alanina yazilan query ile api sorgulanip popup content'de listelenmesi
-* Listelenen sonuclarda her bir karater icin karater resmi, ismi ve kac bolumde oynadigi bilgisinin gosterilmesi
-* query icin yazilan sozcugun listelenen sonuclarda vurgulanmasi (ornek tasarimda 'ric' aramasi sonuclarinda 'Ric' bold seklinde gosterilmistir)
-* secilen sonuclarin input alanina eklenmesi ve cikarilmasi
-* Keyboard navigation desteklenmeli. Yon tuslari ve tab kullanarak tum islemler yapilabilmeli, input alanindaki secili ogeler veya sonuc listesindeki satirlar gezinebilmeli ve silme/secme islemleri yapilabilmeli.
-* Loading state gosterimi
-* Exception handling ve error statelerinin arayuzde gosterilmesi
-* Ve tabi ki yazdiginiz kodun mimarisi, temiz ve okunakli olmasi belki de en onemli kriter olacaktir.
+To merge a branch to another while running git merge, add --no-verify flag: `git merge --no-verify`
 
-## Olsa iyi olur
-* Deploy edilmis calisan hali ve linki (i.e vercel)
+## Git Commit Message Structure
+
+Commit messages should start with (feat|fix|chore|docs|test|style|refactor|perf|build|ci|revert) following by `:`. <br />
+Example: `git commit -m "feat: button component created`. <br />
+
+## Using Key Navigators
+
+Selected characters list => please use ArrowLeft and ArrowRight for circulate through items and use Backspace for remove selected item
+All characters list => please use ArrowUp and ArrowDown for circulate through items, use Backspace for remove selected item and use Enter for select a character
