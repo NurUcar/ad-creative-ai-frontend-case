@@ -6,7 +6,7 @@ import {
   ISelectedItemKeyDownProps,
 } from "../types";
 
-export const handleListItemKeyDown = ({
+export const handleListItemKeyNavigation = ({
   event,
   listItemContainer,
   selectedListItemIndex,
@@ -45,13 +45,14 @@ export const handleListItemKeyDown = ({
   }
 };
 
-export const handleSelectedItemKeyDown = ({
+export const handleSelectedItemKeyNavigation = ({
   event,
   selectedItemIndex,
   setSelectedItemIndex,
   selectedCharaters,
   setResultArray,
 }: ISelectedItemKeyDownProps) => {
+  console.log("selectedItemIndex", selectedItemIndex);
   if (event.key === "ArrowLeft") {
     setSelectedItemIndex((prevIndex: number) =>
       prevIndex !== null ? Math.max(prevIndex - 1, 0) : 0
@@ -63,11 +64,15 @@ export const handleSelectedItemKeyDown = ({
         : 0
     );
   } else if (event.key === "Backspace") {
-    setResultArray((resultArray: any) =>
-      resultArray?.map((item: IItemProps, itemIndex: number) =>
-        itemIndex === selectedItemIndex ? { ...item, isSelected: false } : item
-      )
-    );
+    selectedItemIndex &&
+      setResultArray((resultArray: any) =>
+        resultArray?.map((item: IItemProps) =>
+          item.id === selectedCharaters[selectedItemIndex]?.id
+            ? { ...item, isSelected: false }
+            : item
+        )
+      );
+    setSelectedItemIndex(null);
   }
 };
 

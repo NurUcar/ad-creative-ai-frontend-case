@@ -12,7 +12,7 @@ const SelectedItem = ({
   setSelectedIndex,
   selectedIndex,
 }: ISelectedItemProps) => {
-  const index = resultArray.findIndex(
+  const index = selectedCharaters.findIndex(
     (tmpItem: IItemProps) => tmpItem.id === item.id
   );
   const onRemoveCharacterClicked = (id: number) => {
@@ -28,8 +28,13 @@ const SelectedItem = ({
     );
   };
   const onSelectedCharacterClicked = () => {
-    setSelectedIndex(index);
+    setSelectedIndex(
+      selectedCharaters.findIndex(
+        (tmpItem: IItemProps) => tmpItem.id === item.id
+      )
+    );
   };
+
   return (
     <div
       className="inline-flex flex-shrink-0 relative justify-between min-w-36 w-auto h-9 ml-3 bg-slate-200 rounded-md items-center pl-2 my-2 active:bg-slate-300 active:outline-none"

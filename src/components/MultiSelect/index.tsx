@@ -5,7 +5,10 @@ import RickAndMortyGif from "../../assets/img/rickAndMorty.gif";
 import { classNames } from "../../utils/classNames";
 import { IconButton } from "../IconButton";
 import { ChevronSVG } from "../Icons/ChevronSVG";
-import { handleListItemKeyDown, handleSelectedItemKeyDown } from "./helpers";
+import {
+  handleListItemKeyNavigation,
+  handleSelectedItemKeyNavigation,
+} from "./helpers";
 import { ListItem } from "./sub-components/ListItem";
 import { SelectedItem } from "./sub-components/SelectedItem";
 import { ListItemSkeleton } from "./sub-components/SkeletonLoader";
@@ -32,18 +35,24 @@ const MultiSelect = ({
   const [selectedListItemIndex, setSelectedListItemIndex] = useState<
     number | null
   >(null);
+  const [scrollPosition, setScrollPosition] = useState<number | null>(null);
 
   useEffect(() => {
     searchText?.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
   }, [searchText]);
 
-  const onScroll = (e: any) => {
-    setIsScrollBottom(
-      e.target.scrollHeight - e.target.scrollTop - 10 <= e.target.clientHeight
-    );
+  useEffect(() => {
+    selectedItemIndex !== null && setSelectedListItemIndex(null);
+    selectedListItemIndex !== null && setSelectedItemIndex(null);
+  }, [selectedItemIndex, selectedListItemIndex]);
 
-    if (isScrollBottom) {
-      dataLength > resultArray.length && setPage(page + 1);
+  const onScroll = (event: any) => {
+    setIsScrollBottom(
+      event.target.scrollHeight - event.target.scrollTop - 10 <=
+        event.target.clientHeight
+    );
+    if (isScrollBottom && dataLength > resultArray.length) {
+      setPage(page + 1);
     }
   };
 
@@ -68,7 +77,7 @@ const MultiSelect = ({
           className=" flex flex-wrap w-full h-full  flex-row place-items-center outline-none"
           tabIndex={0}
           onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
-            handleSelectedItemKeyDown({
+            handleSelectedItemKeyNavigation({
               event,
               selectedItemIndex,
               setSelectedItemIndex,
@@ -135,7 +144,7 @@ const MultiSelect = ({
             onScroll={onScroll}
             tabIndex={0}
             onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
-              handleListItemKeyDown({
+              handleListItemKeyNavigation({
                 event,
                 listItemContainer,
                 selectedListItemIndex,
