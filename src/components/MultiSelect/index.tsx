@@ -35,10 +35,12 @@ const MultiSelect = ({
   const [selectedListItemIndex, setSelectedListItemIndex] = useState<
     number | null
   >(null);
-  const [scrollPosition, setScrollPosition] = useState<number | null>(null);
 
   useEffect(() => {
-    searchText?.length > 0 ? setIsPanelOpen(true) : setIsPanelOpen(false);
+    if (searchText.length > 0) {
+      setIsPanelOpen(true);
+      setResultArray([]);
+    } else setIsPanelOpen(false);
   }, [searchText]);
 
   useEffect(() => {
