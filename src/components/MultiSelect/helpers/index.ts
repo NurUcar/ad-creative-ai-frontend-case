@@ -52,7 +52,6 @@ export const handleSelectedItemKeyNavigation = ({
   selectedCharaters,
   setResultArray,
 }: ISelectedItemKeyDownProps) => {
-  console.log("selectedItemIndex", selectedItemIndex);
   if (event.key === "ArrowLeft") {
     setSelectedItemIndex((prevIndex: number) =>
       prevIndex !== null ? Math.max(prevIndex - 1, 0) : 0
